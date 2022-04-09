@@ -1,0 +1,6 @@
+[deps]
+Dash = "1b08a953-4be3-4667-9a23-3db579824955"
+Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+
+[compat]
+Dash = "1"
