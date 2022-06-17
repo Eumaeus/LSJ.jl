@@ -53,6 +53,14 @@ callback!(
 
 end
 
+callback!(
+   app,
+   Output("urlDisplay", "children"),
+   Input("thisUrl", "search")) do input_value
+
+   input_value
+end
+
 
 #If there is a valid URN in #passageInput, change the text of button #querySubmit
 callback!(
