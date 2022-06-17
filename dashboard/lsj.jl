@@ -111,7 +111,8 @@ app.layout = html_div(className = "w3-container") do
     end,
     html_div( className = "push", " "),
     html_div( className = "smallPrint") do 
-      bottomSmallPrint 
+      bottomSmallPrint,
+      dcc_location(id = "thisUrl", search = "?urn=", refresh=false)
     end
 
 

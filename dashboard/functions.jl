@@ -25,9 +25,16 @@ function filterLexIndex(greekString::String , idx::Vector{Tuple{String, String, 
     filter(idx) do item
         startswith(item[1], greekString)
     end
-    
 end
 
+function getUrn(s::String)
+   try
+        Cite2Urn(s)
+    catch err
+        Nothing
+    end
+  
+end
 
 
 

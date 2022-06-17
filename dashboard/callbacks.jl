@@ -21,3 +21,50 @@ callback!(
     newOptions
 end
 
+#Checks contents of #passageInput for a valid Cite2Urn; if there is one, activate button #querySubmit
+callback!(
+    app, 
+    Output("querySubmit", "disabled"), 
+    Input("passageInput", "value"),
+    prevent_initial_call=true) do input_value
+
+    trialUrn = getUrn(input_value)
+
+    if (trialUrn == Nothing) true
+    else false
+    end
+end
+
+#TESTING update the URL
+callback!(
+        app,
+        Output("thisUrl", "search"),
+        Input("passageInput", "value"),
+        prevent_initial_call=true) do input_value
+
+    if (input_value == Nothing) "?urn="
+    else
+            trialUrn = getUrn(input_value)
+
+            if (trialUrn == Nothing) "?urn="
+            else "?urn=$input_value"
+            end
+        end
+
+end
+
+
+#If there is a valid URN in #passageInput, change the text of button #querySubmit
+callback!(
+    app, 
+    Output("querySubmit", "children"), 
+    Input("querySubmit", "disabled"),
+    prevent_initial_call=true) do input_value
+
+    if (input_value) # == "disabled; true"
+        "Enter a valid URN"
+    else
+        "Look up entry for URN"
+    end
+
+end

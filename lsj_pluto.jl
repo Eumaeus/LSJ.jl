@@ -135,6 +135,36 @@ fli = filterLexIndex("ζ")
 # ╔═╡ b5a6ded1-d12f-4ede-b299-f752fff44249
 lexIndexToOptions(fli)
 
+# ╔═╡ bd95cf36-7403-4a8f-971b-0c104568853f
+testU = Cite2Urn("dogs")
+
+# ╔═╡ 5574db32-b8c0-40d3-8774-2d74233dbb95
+UrnOrNothing = Union{Cite2Urn, Nothing}
+
+# ╔═╡ dab12114-b92e-43bc-a7f4-78dead28a5ec
+StringOrNothing = Union{String, Nothing}
+
+# ╔═╡ 18ca8563-6af9-4bb2-95c3-093191121bf8
+function getUrn(s::StringOrNothing)
+	try
+		Cite2Urn(s)
+	catch err
+		Nothing
+	end
+end
+
+# ╔═╡ a6dfd98f-ec12-445f-ad65-ac4f05c3fcb6
+getUrn("urn:cite2:hmt:lsj.chicago_md:n46050")
+
+# ╔═╡ f8730de1-b663-451a-baf0-0d6bff744fe2
+getUrn("dogs")
+
+# ╔═╡ 172bd202-f347-490f-9fdf-5365556dd6f8
+n::StringOrNothing = Nothing
+
+# ╔═╡ 8490c3e6-26ab-4087-91ba-499f91719631
+getUrn(n)
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -1148,5 +1178,13 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═6c3d097e-3055-48ce-b124-3112a712e514
 # ╠═d1632dc9-5203-4932-b901-b1283276f243
 # ╠═b5a6ded1-d12f-4ede-b299-f752fff44249
+# ╠═bd95cf36-7403-4a8f-971b-0c104568853f
+# ╠═5574db32-b8c0-40d3-8774-2d74233dbb95
+# ╠═dab12114-b92e-43bc-a7f4-78dead28a5ec
+# ╠═18ca8563-6af9-4bb2-95c3-093191121bf8
+# ╠═a6dfd98f-ec12-445f-ad65-ac4f05c3fcb6
+# ╠═f8730de1-b663-451a-baf0-0d6bff744fe2
+# ╠═172bd202-f347-490f-9fdf-5365556dd6f8
+# ╠═8490c3e6-26ab-4087-91ba-499f91719631
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
