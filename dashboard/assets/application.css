@@ -55,15 +55,14 @@ footer > p > a:hover {
 div.small_print {
 	font-family: Helvetica, sans;
 	font-weight: 300;
-	font-size: 12pt;
+	font-size: 80%;
 	line-height: 1.3;
 	color: 582c83;
 }
 
 div.smallPrint {
-		display: inline-block;
+	display: inline-block;
 	clear:  both;
-
 }
 
 /* LSJ specific */
@@ -75,7 +74,7 @@ div#menu p {
 	color: navy;
 }
 
-.greekFont {
+.greekFont, div#alphaList label {
 	 font-family: "EB Garamond",  "LinuxLibertineORegular", "AseaRegular", "Times", serif; 
 	/* font-family: system-ui; */
 }
@@ -106,7 +105,7 @@ span.lsjpn:after {
 }
 
 span#greekOutput {
-	color: #666;
+	color: maroon;
 	font-size: 75%;
 }
 span#greekOutput:before {
@@ -120,7 +119,7 @@ span#greekOutput:after {
 }
 
 div#searchDiv, div#searchEnglishDiv, div#passageInputDiv {
-	max-width: 20em;
+	max-width: 18em;
 	display: block;
 }
 
@@ -137,12 +136,12 @@ div#searchDiv{
 
 div#searchEnglishDiv {
 	display:  inline-block;
-	min-width:  22em;
+	min-width:  18em;
 }
 
 div#passageInputDiv{
 	display:  inline-block;
-	min-width:  22em;
+	min-width:  18em;
 }
 
 button#searchButton, button#querySubmit {
@@ -156,12 +155,13 @@ label {
 
 div#lexiconDiv {
 	float:left;
-	max-width: 70%;
+	max-width: 80%;
 }
 
 div#lexiconDiv div {
 	clear: both;
-	margin-top: 0.5em;
+  vertical-align: top;	
+	margin-top: 0;
 }
 
 div.lexEntryDiv {
@@ -354,7 +354,53 @@ ul#resultsList {
 	background-attachment: local, local, scroll, scroll;
 }
 
-ul#alphaList {
+div#alphaList {
+	max-width:  4em;
+}
+
+div#alphaList label:hover {
+	background-color:  rgb(232, 232, 232)
+}
+
+div#alphaList label input:checked {
+	font-size:  125%;
+	margin-right:  0.3em;
+}
+
+div#alphaList label input:checked {
+	margin-right:  0.3em;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+div#alphaList label {
+	color:  navy;
+	font-size:  80%;
+	margin:  0;
+	padding:  0;
+}
+
+input[type="radio"]:checked::before {
+  content: "☞";
+  color: maroon;
+}
+
+
+
+div#alphaList label input {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: #fff;
+  /* Not removed via appearance */
+  margin: 0;
+  color:  navy;
+
+}
+
+
+ul#alphaList, div#alphaList {
 	float: left;
 	list-style: none;
 	color: navy;
@@ -365,7 +411,7 @@ ul#alphaList {
 }
 
 
-ul#volumeList {
+div#volumeList, ul#volumeList {
 	float: left;
 	list-style: none;
 	color: navy;
@@ -382,9 +428,10 @@ ul#volumeList {
 
 }
 
-ul#volumeList.long {
+div#volumeList.long, ul#volumeList.long {
 	overflow: scroll;
 }
+
 ul#alphaList li, ul#volumeList li {
 	margin-left: 0;
 	padding-left: 0;
@@ -1441,6 +1488,10 @@ header {
 	color: rgb(255, 240, 194);
 }
 
+header div p {
+	margin: 0.2em;
+}
+
 header em {
 	font-style: italic;
 	font-weight: bold;
@@ -1458,6 +1509,10 @@ h2 {
 	margin-bottom: 3px;
 }
 
+div.push {
+	clear:  both;
+	min-height:  6em;
+}
 
 body {
 	font: 16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
