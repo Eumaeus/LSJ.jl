@@ -97,8 +97,8 @@ app.layout = html_div(className = "w3-container") do
             """[The Lewis &amp; Short Latin /Dictionary](http://folio2.furman.edu/lewis-short/index.html) | [The CITE Architecture](http://cite-architecture.github.io) | [About this project](https://eumaeus.github.io/2018/10/30/lsj.html)"""
         ),
         alphaMenu,
-        html_ul( id = "volumeList", className = "greekFont"),
-        #volumeList,
+        #html_ul( id = "volumeList", className = "greekFont"),
+        volumeList,
         html_div( id = "lexiconDiv") do 
             html_div() do
                 searchDiv,

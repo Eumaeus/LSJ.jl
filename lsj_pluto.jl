@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.8
+# v0.19.9
 
 using Markdown
 using InteractiveUtils
@@ -113,6 +113,13 @@ optVec = begin
 	end
 end
 
+# ╔═╡ 7f7652ad-92f5-49cf-9d51-6f936eb79fe5
+function lexIndexToOptions(idx::Vector{Tuple{String, String, Cite2Urn}})
+	map(idx) do item
+		makeOption(item[2], item[3])
+	end
+end
+
 # ╔═╡ 6c3d097e-3055-48ce-b124-3112a712e514
 function filterLexIndex(greekString::String , idx::Vector{Tuple{String, String, Cite2Urn}} = lsj_keys)::Vector{Tuple{String, String, Cite2Urn}}
 
@@ -123,7 +130,10 @@ function filterLexIndex(greekString::String , idx::Vector{Tuple{String, String, 
 end
 
 # ╔═╡ d1632dc9-5203-4932-b901-b1283276f243
-filterLexIndex("ζ")
+fli = filterLexIndex("ζ")
+
+# ╔═╡ b5a6ded1-d12f-4ede-b299-f752fff44249
+lexIndexToOptions(fli)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1134,7 +1144,9 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═15609285-574d-4ff2-b274-f858f8e46c67
 # ╠═1cbd259c-5f6d-411f-a2d2-5b2d206d6bc8
 # ╠═34873337-c130-4bc0-91ad-1802ce8c5c9e
+# ╠═7f7652ad-92f5-49cf-9d51-6f936eb79fe5
 # ╠═6c3d097e-3055-48ce-b124-3112a712e514
 # ╠═d1632dc9-5203-4932-b901-b1283276f243
+# ╠═b5a6ded1-d12f-4ede-b299-f752fff44249
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

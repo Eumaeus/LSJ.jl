@@ -13,9 +13,10 @@ function makeOption( l::String, u::Cite2Urn )::NamedTuple{(:label, :value), Tupl
     (label = l, value = "$u")
 end 
 
-function wordUrnToOption(wu::Vector{Tuple{String, Cite2Urn}})::NamedTuple{(:label, :value), Tuple{String, String}}
-    map(wu) do item
-        makeOption(item[1], item[2])
+
+function lexIndexToOptions(idx::Vector{Tuple{String, String, Cite2Urn}})
+    map(idx) do item
+        makeOption(item[2], item[3])
     end
 end
 

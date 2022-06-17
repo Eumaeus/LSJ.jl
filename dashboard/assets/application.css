@@ -72,6 +72,7 @@ div#menu p {
 	margin: 0;
 	padding: 0;
 	color: navy;
+	margin-bottom: 1em;
 }
 
 .greekFont, div#alphaList label {
@@ -156,6 +157,8 @@ label {
 div#lexiconDiv {
 	float:left;
 	max-width: 80%;
+	margin-top:  0.3em;
+	margin-left:  3em;
 }
 
 div#lexiconDiv div {
@@ -358,36 +361,38 @@ div#alphaList {
 	max-width:  4em;
 }
 
-div#alphaList label:hover {
+div#alphaList label:hover, div#volumeList label:hover {
 	background-color:  rgb(232, 232, 232)
 }
 
-div#alphaList label input:checked {
+div#alphaList label input:checked, div#volumeList label input:checked {
 	font-size:  125%;
 	margin-right:  0.3em;
 }
 
-div#alphaList label input:checked {
+div#alphaList label input:checked, div#volumeList label input:checked {
 	margin-right:  0.3em;
 	margin-left: 0;
 	padding-left: 0;
 }
 
-div#alphaList label {
+div#alphaList label, div#volumeList label {
 	color:  navy;
 	font-size:  80%;
 	margin:  0;
 	padding:  0;
+	margin-left:  1em;
 }
 
 input[type="radio"]:checked::before {
   content: "☞";
-  color: maroon;
+  color: black;
+  margin-left:  -1.2em;
 }
 
 
 
-div#alphaList label input {
+div#alphaList label input, div#volumeList label input {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;
   appearance: none;
@@ -420,7 +425,7 @@ div#volumeList, ul#volumeList {
 	width: 9em;
 	margin-right: 1em;
 	height: 550px;
-	/* overflow: scroll; */
+	overflow: scroll;
 
 	border-top: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
@@ -1511,7 +1516,7 @@ h2 {
 
 div.push {
 	clear:  both;
-	min-height:  6em;
+	min-height:  2em;
 }
 
 body {

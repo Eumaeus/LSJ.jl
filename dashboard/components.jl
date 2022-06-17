@@ -35,6 +35,7 @@ volumeList = begin
 	dcc_radioitems(
 		id = "volumeList",
 		className = "greekFont",
+    labelStyle = Dict("display" => "flex"), # or inline-block?
 		options = []
 	)
 end
