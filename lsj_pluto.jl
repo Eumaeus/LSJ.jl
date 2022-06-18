@@ -57,6 +57,12 @@ end
 (lsj_keys, lexicon) = load_data()
 
 
+# ╔═╡ dbf5ca37-f584-46b9-af1c-46f61ff292ec
+filter( x -> x.urn == Cite2Urn("urn:cite2:hmt:lsj.chicago_md:x"), lexicon)
+
+# ╔═╡ 60c89389-0fff-4e7a-80b2-563492b48925
+lexicon
+
 # ╔═╡ 068e406d-97e4-46be-bc5f-4ebaa898e811
 println("loaded: $(length(lsj_keys)) keys")
 
@@ -164,6 +170,50 @@ n::StringOrNothing = Nothing
 
 # ╔═╡ 8490c3e6-26ab-4087-91ba-499f91719631
 getUrn(n)
+
+# ╔═╡ 526be0e7-f085-4af2-8c0f-d9cdcdedd61f
+trialUrn = getUrn("urn:cite2:hmt:lsj.chicago_md:n46050")
+
+
+# ╔═╡ 8b8e1a62-918d-43d1-bbf3-63c09c6db991
+if (trialUrn == Nothing) ""
+else string(trialUrn)
+end
+
+# ╔═╡ 3bb2d24b-1034-4451-b13f-d0814342792a
+nt = NamedTuple{(:prop_id, :value)}[(prop_id = "inputA.value", value = "a")]
+
+# ╔═╡ 03b355a9-4d0d-40fd-a1be-983a05049b22
+nt[1].prop_id
+
+# ╔═╡ 7f08f88a-e2e6-4282-abd2-e64963749824
+function lookupUrnEntry(u::Cite2Urn, lex::RawDataCollection = lexicon)::String
+    entryVec = filter( x -> x.urn == u, lexicon)
+    if (length(entryVec) < 1) ""
+	else entryVec[1].entry
+    end
+end
+
+# ╔═╡ 2a673d02-8cbb-470c-a809-7aad74147ee4
+u = Cite2Urn("urn:cite2:hmt:lsj.chicago_md:n46644")
+
+# ╔═╡ cca62f7f-1711-431c-9869-068c76b7b692
+lookupUrnEntry(u)
+
+# ╔═╡ 86e7b52c-fd62-4902-bf46-3c6462681770
+function firstLetterForUrn(u::Cite2Urn, lexKeys = lsj_keys)::String
+	lexEntries = begin
+		filter(lexKeys) do k
+			k[3] == u
+		end
+	end
+	if (length(lexEntries) < 1 ) ""
+	else string(lexEntries[1][1][1])
+	end
+end
+
+# ╔═╡ 5857ba88-72b9-4053-9407-d36119608870
+firstLetterForUrn(u)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1162,7 +1212,9 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═a71325f1-1bc4-432a-b0e5-3181fb89912a
 # ╠═ce4ea56d-75d0-4311-b2a6-e1835602b598
 # ╠═5662e914-7147-479c-a428-cb766bf3ca5a
-# ╟─12a07452-297b-453a-a0db-c59784d1f66c
+# ╠═12a07452-297b-453a-a0db-c59784d1f66c
+# ╠═dbf5ca37-f584-46b9-af1c-46f61ff292ec
+# ╠═60c89389-0fff-4e7a-80b2-563492b48925
 # ╠═068e406d-97e4-46be-bc5f-4ebaa898e811
 # ╠═5a5b04f3-d02e-485c-8477-8df69aad9c97
 # ╠═5f360039-d791-4026-904c-37a9cb259cdc
@@ -1186,5 +1238,14 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═f8730de1-b663-451a-baf0-0d6bff744fe2
 # ╠═172bd202-f347-490f-9fdf-5365556dd6f8
 # ╠═8490c3e6-26ab-4087-91ba-499f91719631
+# ╠═526be0e7-f085-4af2-8c0f-d9cdcdedd61f
+# ╠═8b8e1a62-918d-43d1-bbf3-63c09c6db991
+# ╠═3bb2d24b-1034-4451-b13f-d0814342792a
+# ╠═03b355a9-4d0d-40fd-a1be-983a05049b22
+# ╠═7f08f88a-e2e6-4282-abd2-e64963749824
+# ╠═2a673d02-8cbb-470c-a809-7aad74147ee4
+# ╠═cca62f7f-1711-431c-9869-068c76b7b692
+# ╠═86e7b52c-fd62-4902-bf46-3c6462681770
+# ╠═5857ba88-72b9-4053-9407-d36119608870
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

@@ -21,6 +21,17 @@ callback!(
     newOptions
 end
 
+# If a urn is submitted from #querySubmit, go ahead and cancel any selection in #volumeList
+callback!(
+    app, 
+    Output("volumeList", "value"), 
+    Input("querySubmit", "n_clicks"),
+    State("querySubmit", "value"),
+    prevent_initial_call=true) do input_value, input_state
+
+    ""
+end
+
 #Checks contents of #passageInput for a valid Cite2Urn; if there is one, activate button #querySubmit
 callback!(
     app, 
@@ -35,6 +46,24 @@ callback!(
     end
 end
 
+#Checks contents of #passageInput for a valid Cite2Urn; if there is one, add that URN to the @value of button #querySubmit
+callback!(
+    app, 
+    Output("querySubmit", "value"), 
+    Input("passageInput", "value"),
+    prevent_initial_call=true) do input_value
+
+    trialUrn = getUrn(input_value)
+
+    newValue::String = begin
+        if (trialUrn == Nothing) ""
+        else string(trialUrn)
+        end
+    end
+
+    newValue
+end
+
 #TESTING update the URL
 callback!(
         app,
@@ -44,12 +73,12 @@ callback!(
 
     if (input_value == Nothing) "?urn="
     else
-            trialUrn = getUrn(input_value)
+        trialUrn = getUrn(input_value)
 
-            if (trialUrn == Nothing) "?urn="
-            else "?urn=$input_value"
-            end
+        if (trialUrn == Nothing) "?urn="
+        else "?urn=$input_value"
         end
+    end
 
 end
 
@@ -76,3 +105,176 @@ callback!(
     end
 
 end
+
+#= 
+    A Switcher callback. Alas, one of several.
+    Activated from #volumeList, from #passageInput, or from #resultsList
+    Delivers results to #selectedUrnP
+=#
+
+callback!(
+    app,
+    Output("selectedUrnP", "children"),
+    Input("querySubmit", "n_clicks"),
+    Input("volumeList", "value"),
+    State("querySubmit", "value"),
+    prevent_initial_call = true) do qValue, vValue, qState
+
+    # querySubmit.n_clicks
+    # volumeList.value
+
+    ctx = callback_context()
+    trigger_id = ctx.triggered[1].prop_id
+
+    if (trigger_id == "volumeList.value")
+        return vValue
+    elseif (trigger_id == "querySubmit.n_clicks")
+        return qState
+    else
+        return ""
+    end
+
+    #return string(ctx) * " *** " * trigger_id
+
+end
+
+
+# When #selectedUrnP changes, get an entry and put it in #entryDiv as Markdown
+callback!(
+    app,
+    Output("lexEntry", "children"),
+    Input("selectedUrnP", "children"),
+    prevent_initial_call = true
+    ) do input_value
+
+    if (input_value == Nothing) ""
+    else
+        trialUrn = getUrn(input_value)
+
+        if (trialUrn == Nothing) PreventUpdate()
+        else
+            lexEntry::String = lookupUrnEntry(trialUrn)
+            return dcc_markdown(lexEntry)
+        end
+    end
+end
+
+# When #selectedUrnP changes, get an entry's .key and put it in #lexEntryLabel
+callback!(
+    app,
+    Output("lexEntryLabel", "children"),
+    Input("selectedUrnP", "children"),
+    prevent_initial_call = true
+    ) do input_value
+
+    if (input_value == Nothing) ""
+    else
+        trialUrn = getUrn(input_value)
+
+        if (trialUrn == Nothing) PreventUpdate()
+        else
+            lexKey::String = lookupUrnKey(trialUrn)
+            return dcc_markdown(lexKey)
+        end
+    end
+end
+
+# When #selectedUrnP changes, update #alphaList
+callback!(
+    app, 
+    Output("alphaList", "value"), 
+    Input("selectedUrnP", "children"),
+    prevent_initial_call=true) do input_value
+
+    if (input_value == Nothing) PreventUpdate()
+    else
+        trialUrn = getUrn(input_value)
+
+        if (trialUrn == Nothing) PreventUpdate()
+        else
+            firstLetter::String = firstLetterForUrn(trialUrn)
+            if (firstLetter == "") PreventUpdate()
+            else firstLetter
+            end
+        end
+    end
+end
+
+# When #volumeList is updated, zero the value of #passageInput
+callback!(
+    app,
+    Output("passageInput", "value"),
+    Input("volumeList", "value"),
+    prevent_initial_call = true
+    ) do input_value
+
+    ""
+
+end
+
+#= When #selectedUrnP changes update #volumeList
+=#
+
+
+# When #resultsList changes, update #selecteUrnP
+
+# When #resultsList changes, update #alphaList
+
+# When #resultsList changes, update #volumeList
+
+# When #selectedUrnP changes, update #lexEntryLink
+callback!(
+    app,
+    Output("lexEntryLink", "children"),
+    Input("selectedUrnP", "children"),
+    prevent_initial_call = true
+    ) do input_value
+
+    if (input_value == Nothing) PreventUpdate()
+    else
+        trialUrn = getUrn(input_value)
+
+        if (trialUrn == Nothing) PreventUpdate()
+        else
+            linkUrl = "?urn=$(string(trialUrn))"
+            html_a( href=linkUrl, "Link")            
+        end
+    end
+
+end
+
+# When #selectedUrnP changes, update #lexEntryUrn
+callback!(
+    app,
+    Output("lexEntryUrn", "children"),
+    Input("selectedUrnP", "children"),
+    prevent_initial_call = true
+    ) do input_value
+
+    if (input_value == Nothing) PreventUpdate()
+    else
+        trialUrn = getUrn(input_value)
+
+        if (trialUrn == Nothing) PreventUpdate()
+        else
+            html_a(string(trialUrn))            
+        end
+    end
+
+end
+
+# When #lexEntryUrn is populated, change the .class of #copyUrn
+callback!(
+    app,
+    Output("copyUrn", "className"),
+    Input("lexEntryUrn", "children"),
+    prevent_initial_call = true
+    ) do entry_value
+
+        if (entry_value == "") PreventUpdate()
+        else "app_visible"
+        end
+
+end
+
+

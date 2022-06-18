@@ -36,6 +36,33 @@ function getUrn(s::String)
   
 end
 
+# Returns the entry for a lexicon entry
+function lookupUrnEntry(u::Cite2Urn, lex::RawDataCollection = lexicon)::String
+    entryVec = filter( x -> x.urn == u, lexicon)
+    if (length(entryVec) < 1) ""
+    else entryVec[1].entry
+    end
+end
+
+# Returns the key for a lexicon entry
+function lookupUrnKey(u::Cite2Urn, lex::RawDataCollection = lexicon)::String
+    entryVec = filter( x -> x.urn == u, lexicon)
+    if (length(entryVec) < 1) ""
+    else entryVec[1].key
+    end
+end
+
+# For a URN, return the first letter of the lemma
+function firstLetterForUrn(u::Cite2Urn, lexKeys = lsj_keys)::String
+    lexEntries = begin
+        filter(lexKeys) do k
+            k[3] == u
+        end
+    end
+    if (length(lexEntries) < 1 ) ""
+    else string(lexEntries[1][1][1])
+    end
+end
 
 
 

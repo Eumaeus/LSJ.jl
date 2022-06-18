@@ -67,7 +67,7 @@ println("loaded: $(length(lexicon.data)) entries")
 println("example: $(lsj_keys[200]): $(typeof(lsj_keys[200]))")
 
 
-external_stylesheets = ["application.css"]
+external_stylesheets = ["https://fonts.googleapis.com/css?family=EB+Garamond:400,400i,500,500i,600,600i,700,700i,800,800i&subset=cyrillic-ext,greek,greek-ext,latin-ext", "application.css"]
  
 
 # This will make it easy to install in Houston
@@ -105,6 +105,7 @@ app.layout = html_div(className = "w3-container") do
                 searchEnglishDiv,
                 passageInputDiv
             end,
+            selectedUrnDiv,
             resultsList,
             entryDiv
         end
