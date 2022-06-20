@@ -46,13 +46,13 @@ end
 
 searchDiv = html_div( id = "searchDiv" ) do 
 	html_label( className="inputLabel", htmlFor="greekInput", "Search Greek:"),
-	dcc_input( className="inputLabel", id="greekInput", debounce = false, autoComplete="false", type="text", size="30", value=""),
+	dcc_input( className="inputLabel", id="greekInput", debounce = false, autoComplete="false", type="text", size="18", value=""),
 	html_span( id="greekOutput", "Nothing typed")
 end
 
 searchEnglishDiv = html_div( id = "searchEnglishDiv") do 
 	html_label( className="inputLabel", htmlFor="englishInput", "Search All Text:"),
-	dcc_input( className="inputLabel", id="englishInput", type="text", size="30", value=""),
+	dcc_input( className="inputLabel", id="englishInput", type="text", size="18", value=""),
 	html_button( id="searchButton", "Search All Text", disabled = true)
 end
 

@@ -138,7 +138,7 @@ span#greekOutput:after {
 }
 
 div#searchDiv, div#searchEnglishDiv, div#passageInputDiv {
-	max-width: 18em;
+	max-width: 20em;
 	display: block;
 }
 
@@ -146,21 +146,23 @@ label.inputLabel {
 	display: block;
 	color: navy;
 	font-size: 85%;
+	width:  12em;
 }
 
 div#searchDiv{
 	display:  inline-block;
-	min-width:  22em;
+	min-width:  1em;
+	margin-right: 3em;
 }
 
 div#searchEnglishDiv {
 	display:  inline-block;
-	min-width:  18em;
+	min-width:  12em;
 }
 
 div#passageInputDiv{
 	display:  inline-block;
-	min-width:  18em;
+	min-width:  16em;
 }
 
 button#searchButton, button#querySubmit {
@@ -178,9 +180,9 @@ div#lookupStuff {
 
 div#lexiconDiv {
 	float:left;
-	max-width: 70%;
+	max-width: 68%;
 	margin-top:  0.3em;
-	margin-left:  3em;
+	margin-left:  2em;
 }
 
 div#lexiconDiv div {
