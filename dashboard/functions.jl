@@ -155,4 +155,17 @@ function fullTextSearch(s::String, lex = lexicon)
     end
 end
 
+function isInLex(u::Cite2Urn, lex = lexicon)
+    filt = filter(lexicon) do item
+        item.urn == u
+    end
+    length(filt) > 0
+end
 
+function isInLex(s::String, lex = lexicon)
+    u = Cite2Urn(s)
+    filt = filter(lexicon) do item
+        item.urn == u
+    end
+    length(filt) > 0
+end
