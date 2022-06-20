@@ -144,4 +144,15 @@ function entryContains(s, idx = lsj_keys)::Vector{Tuple{String, Cite2Urn}}
     
 end
 
+function fullTextSearch(s::String, lex = lexicon)
+    filteredLex = filter(lex) do item
+        lcEntry = lowercase(item.entry)
+        contains(lcEntry, s)
+    end
+
+    map(filteredLex) do item
+        (item.key, item.urn)
+    end
+end
+
 

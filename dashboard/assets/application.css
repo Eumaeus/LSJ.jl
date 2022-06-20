@@ -381,7 +381,9 @@ ul#resultsList, div#resultsList {
 	overflow: scroll;
 	cursor: pointer;
 	background-color: rgb(244, 244, 244);
-	border: 1px solid rgb(237, 237, 237);
+	border: 1px solid rgb(216, 216, 216);
+	border-radius:  8px;
+	box-shadow:  inset 0px 4px 3px #ddd;
 	
 	/* Opera doesn't support this in the shorthand */
 	background-attachment: local, local, scroll, scroll;

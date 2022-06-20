@@ -46,19 +46,19 @@ end
 
 searchDiv = html_div( id = "searchDiv" ) do 
 	html_label( className="inputLabel", htmlFor="greekInput", "Search Greek:"),
-	dcc_input( className="inputLabel", id="greekInput", debounce = false, autoComplete="false", type="text", size="18", value=""),
+	dcc_input( className="inputLabel", id="greekInput", debounce = false, autoComplete="off", type="text", size="18", value=""),
 	html_span( id="greekOutput", "Nothing typed")
 end
 
 searchEnglishDiv = html_div( id = "searchEnglishDiv") do 
 	html_label( className="inputLabel", htmlFor="englishInput", "Search All Text:"),
-	dcc_input( className="inputLabel", id="englishInput", type="text", size="18", value=""),
+	dcc_input( className="inputLabel", id="englishInput", autoComplete="off", type="text", size="18", value=""),
 	html_button( id="searchButton", "Search All Text", disabled = true)
 end
 
 passageInputDiv = html_div( id = "passageInputDiv" ) do 
 	html_label( className="invalidPassage inputLabel", htmlFor="passageInput", "Retrieve by URN:"),
-	dcc_input( className="inputLabel", id="passageInput", type="text", size="30", placeholder = "urn:cite2:hmt:lsj.chicago_md:n147"),
+	dcc_input( className="inputLabel", id="passageInput", autoComplete="off", type="text", size="30", placeholder = "urn:cite2:hmt:lsj.chicago_md:n147"),
 	html_button( id="querySubmit", disabled=true, value = "",  "Enter a valid URN")
 end
 
