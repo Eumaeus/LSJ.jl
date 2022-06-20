@@ -111,7 +111,7 @@ app.layout = html_div(className = "w3-container") do
         #html_ul( id = "volumeList", className = "greekFont"),
         volumeList,
         html_div( id = "lexiconDiv") do 
-            html_div() do
+            html_div(id = "lookupStuff") do
                 searchDiv,
                 searchEnglishDiv,
                 passageInputDiv
@@ -123,9 +123,9 @@ app.layout = html_div(className = "w3-container") do
     end,
     html_div( className = "push", " "),
     html_div( className = "smallPrint") do 
-      bottomSmallPrint,
-      dcc_location(id = "thisUrl", search = "?urn=", refresh=false),
-      html_p(id = "urlDisplay", className = "", "")
+      bottomSmallPrint
+      #dcc_location(id = "thisUrl", search = "?urn=", refresh=false),
+      #html_p(id = "urlDisplay", className = "", "")
     end
 
 
