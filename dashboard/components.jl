@@ -53,7 +53,7 @@ end
 searchEnglishDiv = html_div( id = "searchEnglishDiv") do 
 	html_label( className="inputLabel", htmlFor="englishInput", "Search All Text:"),
 	dcc_input( className="inputLabel", id="englishInput", type="text", size="30", value=""),
-	html_button( id="searchButton", "Search All Text")
+	html_button( id="searchButton", "Search All Text", disabled = true)
 end
 
 passageInputDiv = html_div( id = "passageInputDiv" ) do 

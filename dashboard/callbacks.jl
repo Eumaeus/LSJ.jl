@@ -55,20 +55,6 @@ callback!(
 
     end
 
-
-# If a urn is submitted from #querySubmit, go ahead and cancel any selection in #volumeList
-#=
-callback!(
-    app, 
-    Output("volumeList", "value"), 
-    Input("querySubmit", "n_clicks"),
-    State("querySubmit", "value"),
-    prevent_initial_call=true) do input_value, input_state
-
-    ""
-end
-=#
-
 #Checks contents of #passageInput for a valid Cite2Urn; if there is one, activate button #querySubmit
 callback!(
     app, 
@@ -101,35 +87,6 @@ callback!(
     newValue
 end
 
-#TESTING update the URL
-#=
-callback!(
-        app,
-        Output("thisUrl", "search"),
-        Input("passageInput", "value"),
-        prevent_initial_call=true) do input_value
-
-    if (input_value == Nothing) "?urn="
-    else
-        trialUrn = getUrn(input_value)
-
-        if (trialUrn == Nothing) "?urn="
-        else "?urn=$input_value"
-        end
-    end
-
-end
-=#
-
-#=
-callback!(
-   app,
-   Output("urlDisplay", "children"),
-   Input("thisUrl", "search")) do input_value
-
-   input_value
-end
-=#
 
 
 #If there is a valid URN in #passageInput, change the text of button #querySubmit
@@ -148,15 +105,16 @@ callback!(
 end
 
 #= 
-    A Switcher callback. Alas, one of several.
+    A Switcher callback.
     Activated from from #passageInput, from #englishInput/#searchButton, or from #resultsList
 =#
 callback!(
     app,
     Output("selectedUrnP", "children"),
     Input("querySubmit", "n_clicks"),
+    Input("resultsList", "value"),
     State("querySubmit", "value"),
-    prevent_initial_call = true) do qValue, qState
+    prevent_initial_call = true) do qValue, rValue, qState
 
     # querySubmit.n_clicks
     # volumeList.value
@@ -166,6 +124,8 @@ callback!(
 
     if (trigger_id == "querySubmit.n_clicks")
         return qState
+    elseif (trigger_id == "resultsList.value")
+        return rValue
     else
         return ""
     end
@@ -247,8 +207,7 @@ callback!(
     ""
 end
 
-#= When #selectedUrnP changes update #volumeList
-=#
+# When #selectedUrnP changes update #volumeList
 callback!(
     app,
     Output("volumeList", "value"),
@@ -265,16 +224,7 @@ callback!(
             return string(trialUrn)
         end
     end
-
-
 end
-
-
-# When #resultsList changes, update #selecteUrnP
-
-# When #resultsList changes, update #alphaList
-
-# When #resultsList changes, update #volumeList
 
 # When #volumeList-valuei changes, update #lexEntryLink
 callback!(
@@ -328,7 +278,6 @@ callback!(
         if (entry_value == "") PreventUpdate()
         else "app_visible"
         end
-
 end
 
 # When something is typed and transformed into #greekOutput, update #resultsList options
@@ -336,39 +285,68 @@ callback!(
     app,
     Output("resultsList", "options"),
     Input("greekInput", "value"),
-    prevent_initial_call = true) do input_value
+    Input("querySubmit", "n_clicks"),
+    prevent_initial_call = true) do input_valueg, input_valueq
 
-    sl = length(input_value)
+    ctx = callback_context()
+    trigger_id = ctx.triggered[1].prop_id
 
-    if (sl == 0) return []
-    elseif (sl < 3) 
-        le = lemmaEquals(input_value)
-        allFound = cat(le, dims=1)
-        entryFindsToOptions(allFound) |> unique
-    elseif (sl < 4)
-        le = lemmaEquals(input_value)
-        lbw = lemmaBeginsWith(input_value)
-        lc = lemmaContains(input_value)
-        ec = entryContains(input_value)
-        #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
-        allFound = cat(le, lbw, lc, ec, dims=1)
-        entryFindsToOptions(allFound) |> unique
-    elseif( sl < 5 )
-        le = lemmaEquals(input_value)
-        lbw = lemmaBeginsWith(input_value)
-        lc = lemmaContains(input_value)
-        ec = entryContains(input_value)
-        #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
-        allFound = cat(le, lbw, lc, ec, dims=1)
-        entryFindsToOptions(allFound) |> unique
-    else
-        le = lemmaEquals(input_value)
-        lbw = lemmaBeginsWith(input_value)
-        lc = lemmaContains(input_value)
-        ec = entryContains(input_value)
-        #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
-        allFound = cat(le, lbw, lc, ec, dims=1)
-        entryFindsToOptions(allFound) |> unique
+    input_value = begin
+        if (trigger_id == "querySubmit.n_clicks")
+            input_valueq
+        else
+            input_valueg
+        end
     end
 
+    if (input_value == input_valueq) return []
+    else
+
+        sl = length(input_value)
+
+        if (sl == 0) return []
+        elseif (sl < 3) 
+            le = lemmaEquals(input_value)
+            allFound = cat(le, dims=1)
+            entryFindsToOptions(allFound) |> unique
+        elseif (sl < 4)
+            le = lemmaEquals(input_value)
+            lbw = lemmaBeginsWith(input_value)
+            lc = lemmaContains(input_value)
+            ec = entryContains(input_value)
+           #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
+            allFound = cat(le, lbw, lc, ec, dims=1)
+            entryFindsToOptions(allFound) |> unique
+        elseif( sl < 5 )
+            le = lemmaEquals(input_value)
+            lbw = lemmaBeginsWith(input_value)
+            lc = lemmaContains(input_value)
+            ec = entryContains(input_value)
+            #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
+            allFound = cat(le, lbw, lc, ec, dims=1)
+            entryFindsToOptions(allFound) |> unique
+        else
+            le = lemmaEquals(input_value)
+            lbw = lemmaBeginsWith(input_value)
+            lc = lemmaContains(input_value)
+            ec = entryContains(input_value)
+            #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
+            allFound = cat(le, lbw, lc, ec, dims=1)
+            entryFindsToOptions(allFound) |> unique
+        end
+    end
 end 
+
+# When there are more than three characters in #englishInpus, change the .disabled of #searchButton to 'false'
+callback!(
+    app,
+    Output("searchButton", "disabled"),
+    Input("englishInput", "value"),
+    prevent_initial_call = true ) do input_value
+
+    if (length(input_value) < 4) true
+    else
+        false
+    end 
+
+end
