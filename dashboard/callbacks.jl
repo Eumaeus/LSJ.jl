@@ -285,22 +285,16 @@ callback!(
     app,
     Output("resultsList", "options"),
     Input("greekInput", "value"),
-    Input("querySubmit", "n_clicks"),
-    prevent_initial_call = true) do input_valueg, input_valueq
+    Input("searchButton", "n_clicks"),
+    State("englishInput", "value"),
+    prevent_initial_call = true) do input_valueG, input_valueS, stateE
 
     ctx = callback_context()
     trigger_id = ctx.triggered[1].prop_id
 
-    input_value = begin
-        if (trigger_id == "querySubmit.n_clicks")
-            input_valueq
-        else
-            input_valueg
-        end
-    end
+    if (trigger_id == "greekInput.value")
 
-    if (input_value == input_valueq) return []
-    else
+        input_value = input_valueG
 
         sl = length(input_value)
 
@@ -334,6 +328,14 @@ callback!(
             allFound = cat(le, lbw, lc, ec, dims=1)
             entryFindsToOptions(allFound) |> unique
         end
+    elseif (trigger_id == "searchButton.n_clicks")
+
+        input_value = stateE
+
+        allFound = fullTextSearch(input_value)
+        entryFindsToOptions(allFound)
+
+    else PreventUpdate()
     end
 end 
 
@@ -344,7 +346,7 @@ callback!(
     Input("englishInput", "value"),
     prevent_initial_call = true ) do input_value
 
-    if (length(input_value) < 4) true
+    if (length(input_value) < 3) true
     else
         false
     end 
