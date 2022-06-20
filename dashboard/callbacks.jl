@@ -194,7 +194,7 @@ callback!(
         else
             firstLetter::String = firstLetterForUrn(trialUrn)
             if (firstLetter == "") PreventUpdate()
-            else firstLetter
+            else transcodeGreek(firstLetter)
             end
         end
     end
@@ -277,4 +277,43 @@ callback!(
 
 end
 
+# When something is typed and transformed into #greekOutput, update #resultsList options
+callback!(
+    app,
+    Output("resultsList", "options"),
+    Input("greekInput", "value"),
+    prevent_initial_call = true) do input_value
 
+    sl = length(input_value)
+
+    if (sl == 0) return []
+    elseif (sl < 3) 
+        le = lemmaEquals(input_value)
+        allFound = cat(le, dims=1)
+        entryFindsToOptions(allFound) |> unique
+    elseif (sl < 4)
+        le = lemmaEquals(input_value)
+        lbw = lemmaBeginsWith(input_value)
+        ec = entryContains(input_value)
+        #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
+        allFound = cat(le, lbw, lc, ec, dims=1)
+        entryFindsToOptions(allFound) |> unique
+    elseif( sl < 5 )
+        le = lemmaEquals(input_value)
+        lbw = lemmaBeginsWith(input_value)
+        lc = lemmaContains(input_value)
+        ec = entryContains(input_value)
+        #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
+        allFound = cat(le, lbw, lc, ec, dims=1)
+        entryFindsToOptions(allFound) |> unique
+    else
+        le = lemmaEquals(input_value)
+        lbw = lemmaBeginsWith(input_value)
+        lc = lemmaContains(input_value)
+        ec = entryContains(input_value)
+        #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
+        allFound = cat(le, lbw, lc, ec, dims=1)
+        entryFindsToOptions(allFound) |> unique
+    end
+
+end 

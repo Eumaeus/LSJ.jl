@@ -1,31 +1,41 @@
 
-function indexToWordUrn(idx::Vector{Tuple{String, String, Cite2Urn}} = lsj_keys)::Vector{Tuple{String, Cite2Urn}}
+function indexToWordUrn(idx = lsj_keys)
     map(idx) do item
         (item[2], item[3])
     end
 end
 
-function makeOption( l::String, v::String )::NamedTuple{(:label, :value), Tuple{String, String}}
+function makeOption( l::String, v::String )
     (label = l, value = v)
 end 
 
-function makeOption( l::String, u::Cite2Urn )::NamedTuple{(:label, :value), Tuple{String, String}}
+function makeOption( l::String, u::Cite2Urn )
+    (label = l, value = "$u")
+end 
+
+function makeOption( l::SubString{String}, u::Cite2Urn )
     (label = l, value = "$u")
 end 
 
 
-function lexIndexToOptions(idx::Vector{Tuple{String, String, Cite2Urn}})
+function lexIndexToOptions(idx)
     map(idx) do item
         makeOption(item[2], item[3])
     end
 end
 
-function filterLexIndex(greekString::String , idx::Vector{Tuple{String, String, Cite2Urn}} = lsj_keys)::Vector{Tuple{String, String, Cite2Urn}}
-
-    filter(idx) do item
-        startswith(item[1], greekString)
+function entryFindsToOptions(vef)
+    map(vef) do item 
+        makeOption(item[1], item[2])
     end
 end
+
+function filterLexIndex(greekString::String , idx = lsj_keys)
+    filter(idx) do item
+        startswith(transcodeGreek(item[1]), greekString)
+    end
+end
+
 
 function getUrn(s::String)
    try
@@ -65,55 +75,63 @@ function firstLetterForUrn(u::Cite2Urn, lexKeys = lsj_keys)::String
 end
 
 
-
 # Functions for searching and retrieving
+#   All of these use the lex_index, for speed and responsiveness
 
-#=
-    dcc_dropdown(
-        id = "articles"
-    ),
-    dcc_input(
-        id = "word_search"
-    ),
-    html_div( id = "display")
-=#
+function lemmaEquals(s::String, idx::Vector{Tuple{SubString{String}, SubString{String}, CitableObject.Cite2Urn, SubString{String}}} = lsj_keys)::Vector{Tuple{String, Cite2Urn}}
 
-#=
-function article_menu( search_term, lex_keys, lex )
-    if length(search_term) < 3
-       [(label = "Type more!", value = "")] 
-    else
-        equals_index = findall(st -> st == search_term, lex_keys)
-        starts_with_index = findall(st -> startswith(st, search_term), lex_keys)
-        contains_index = findall(st -> contains(st, search_term), lex_keys)
-        findindex = vcat(equals_index, starts_with_index, contains_index) |> unique
-        found_tups = map( findindex ) do index_num
-            (label = "$(lex.data[index_num].key):$(lex.data[index_num].urn)", value = index_num)
+    foundItems = begin
+        filter(idx) do item
+            item[1] == s
         end
-        found_tups
     end
+
+    map(foundItems) do item
+        (item[2], item[3])
+    end
+    
 end
 
-function get_article(index_num, lexicon)
-    lexicon.data[index_num].entry |> dcc_markdown
+function lemmaBeginsWith(s, idx = lsj_keys)::Vector{Tuple{String, Cite2Urn}}
+
+    foundItems = begin
+        filter(idx) do item
+            startswith(item[1], s)
+        end
+    end
+
+    map(foundItems) do item
+        (item[2], item[3])
+    end
+    
 end
 
-callback!(
-    app,
-    Output("articles", "options"),
-    Input("word_search", "value"),
-    prevent_initial_call=true
-) do ws
-    article_menu(ws, lsj_keys, lexicon)
+function lemmaContains(s, idx = lsj_keys)::Vector{Tuple{String, Cite2Urn}}
+
+    foundItems = begin
+        filter(idx) do item
+            contains(item[1], s)
+        end
+    end
+
+    map(foundItems) do item
+        (item[2], item[3])
+    end
+    
 end
 
-callback!(
-    app,
-    Output("display", "children"),
-    Input( "articles", "value" ),
-    prevent_initial_call=true
-) do index_num
-    get_article(index_num, lexicon)
+function entryContains(s, idx = lsj_keys)::Vector{Tuple{String, Cite2Urn}}
+
+    foundItems = begin
+        filter(idx) do item
+            contains(item[4], s)
+        end
+    end
+
+    map(foundItems) do item
+        (item[2], item[3])
+    end
+    
 end
 
-=#
+

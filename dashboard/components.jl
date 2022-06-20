@@ -21,7 +21,7 @@ alphaMenu = begin
 			(label = "Οο", value = "ο"),
 			(label = "Ππ", value = "π"),
 			(label = "Ρρ", value = "ρ"),
-			(label = "Σς", value = "ς"),
+			(label = "Σς", value = "σ"),
 			(label = "Ττ", value = "τ"),
 			(label = "Υυ", value = "υ"),
 			(label = "Φφ", value = "φ"),
@@ -37,7 +37,7 @@ volumeList = begin
 		className = "greekFont",
     labelStyle = Dict("display" => "flex"), # or inline-block?
 		options = []
-	)#
+	)
 end
 
 selectedUrnDiv = html_div( id = "selectedUrnDiv") do 
@@ -46,7 +46,7 @@ end
 
 searchDiv = html_div( id = "searchDiv" ) do 
 	html_label( className="inputLabel", htmlFor="greekInput", "Search Greek:"),
-	dcc_input( className="inputLabel", id="greekInput", autoComplete="false", type="text", size="30", value=""),
+	dcc_input( className="inputLabel", id="greekInput", debounce = false, autoComplete="false", type="text", size="30", value=""),
 	html_span( id="greekOutput", "Nothing typed")
 end
 
@@ -62,7 +62,12 @@ passageInputDiv = html_div( id = "passageInputDiv" ) do
 	html_button( id="querySubmit", disabled=true, value = "",  "Enter a valid URN")
 end
 
-resultsList = html_ul( id = "resultsList")
+resultsList = dcc_radioitems(
+		id = "resultsList",
+		className = "greekFont",
+    labelStyle = Dict("display" => "inline-block"), # or inline-block?
+		options = []
+	)
 
 entryDiv = html_div(id = "entryDiv", className = "greekFont") do
 	html_div(id = "lexEntryDiv", className = "greekFont") do

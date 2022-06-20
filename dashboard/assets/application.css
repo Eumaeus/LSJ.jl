@@ -170,7 +170,7 @@ label {
 
 div#lexiconDiv {
 	float:left;
-	max-width: 80%;
+	max-width: 70%;
 	margin-top:  0.3em;
 	margin-left:  3em;
 }
@@ -179,6 +179,10 @@ div#lexiconDiv div {
 	clear: both;
   vertical-align: top;	
 	margin-top: 0;
+}
+
+div#entryDiv {
+	max-width:  80%;
 }
 
 div#lexEntryDiv {
@@ -279,12 +283,37 @@ div.lexEntry {
 	border: 1px solid red;
 }
 */
-ul#resultsList li:hover {
-	background-color: rgba(132, 132, 132, 0.5);
-	border: 1px solid rgba(100, 100, 100, 0.5);
-	color: white;
+
+div#resultsList label {
+	/*background-color: rgba(232, 232, 232, 0.5);*/
+	/*border: 1px solid rgba(200, 200, 200, 0.5);*/
+	background-color:  white;
+	border:  1px solid navy;
+	color: navy;
+	display: inline-block;
+	margin: 4px;
+	margin-left:  0.3em;
+	min-width:  3em;
+	padding: 3px 8px 3px 8px;
+	border-radius: 5px;
+	font-size: 150%;
+}
+
+ul#resultsList li:hover, div#resultsList label:hover  {
+	background-color:  white;
+	border: 2px solid navy;
 	cursor: pointer;
 }
+
+div#resultsList label input[type="radio"]:checked::before {
+  content: "▶︎ ";
+	background-color: white;
+  color: black;
+  font-size:  125%;
+  margin-left:  0em;
+  margin-right:  1em;
+}
+
 
 ul#resultsList li.selected {
 	border: 1px solid navy;
@@ -293,7 +322,7 @@ ul#resultsList li.selected {
 	cursor: pointer;
 }
 
-ul#resultsList li:active {
+ul#resultsList li:active, div#resultsList label:active {
 	border: 1px solid maroon;
 	background-color: maroon;
 	color: rgb(255, 240, 194);
@@ -314,15 +343,7 @@ ul#resultsList li:active {
 	opacity: 0;
 }
 
-ul#resultsList li {
-	background-color: rgba(232, 232, 232, 0.5);
-	border: 1px solid rgba(200, 200, 200, 0.5);
-	color: navy;
-	display: inline-block;
-	margin: 2px;
-	padding: 2px 8px 2px 8px;
-	border-radius: 5px;
-}
+
 
 li.perfectMatch {
 	background-color: rgba(205, 232, 205, 0.5);
@@ -336,14 +357,16 @@ li.inTerms {
 	background-color: rgba(232, 232, 205, 0.5);
 }
 
-ul#resultsList {
-	list-style: none;
+ul#resultsList, div#resultsList {
 	font-size: 80%;
 	color: navy;
 	margin-left: 0;
 	padding-left: 0;
+	max-width:  80%;
 	/*margin-top:	7em;*/
 	max-height: 8em;
+	padding-right:  3em;
+	margin-bottom:  5px;
 	min-height:  2em;
 	overflow: scroll;
 	cursor: pointer;
@@ -354,8 +377,9 @@ ul#resultsList {
 	background-attachment: local, local, scroll, scroll;
 }
 
-div#alphaList {
-	max-width:  4em;
+div#alphaList, div#volumeList {
+	max-width:  8em;
+	font-size:  150%;
 }
 
 div#alphaList label:hover, div#volumeList label:hover {
@@ -373,7 +397,7 @@ div#alphaList label input:checked, div#volumeList label input:checked {
 	padding-left: 0;
 }
 
-div#alphaList label, div#volumeList label {
+div#alphaList label, div#volumeList label, div#volumeList label, div#volumeList label {
 	color:  navy;
 	font-size:  80%;
 	margin:  0;
@@ -381,15 +405,18 @@ div#alphaList label, div#volumeList label {
 	margin-left:  1em;
 }
 
-input[type="radio"]:checked::before {
+div#alphaList label input[type="radio"]:checked::before, div#volumeList label input[type="radio"]:checked::before {
   content: "☞";
   color: black;
   margin-left:  -1.2em;
+  font-size:  100%;
+  position:  relative;
+  top: -3px;
 }
 
 
 
-div#alphaList label input, div#volumeList label input {
+div#alphaList label input, div#volumeList label input, div#resultsList label input {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;
   appearance: none;
@@ -419,7 +446,7 @@ div#volumeList, ul#volumeList {
 	color: navy;
 	margin-left: 0;
 	padding-left: 1em;
-	width: 9em;
+	width: 8em;
 	margin-right: 1em;
 	height: 550px;
 	overflow: scroll;

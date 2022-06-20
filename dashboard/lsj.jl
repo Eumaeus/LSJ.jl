@@ -49,12 +49,23 @@ function load_data()
     end 
     =#
     lsj_coll = fromcex(lsj_data, RawDataCollection, delimiter = "#")[2]
+
+    idx_path = joinpath(assetsfolder, "new_index.txt")
+    idx_data = string_load(idx_path)
     lsj_index = begin
-       map( lsj_coll.data ) do item 
-         alpha = filter( c -> Unicode.isletter(c), item.key)
-         (Unicode.normalize(alpha, stripmark=true), item.key, item.urn)
-       end
+        idx_lines = split(idx_data, "\n")
+        map(idx_lines) do ll 
+            idx_split = split(ll, "#")
+            idx_lemma = idx_split[1]
+            idx_key = idx_split[2]
+            idx_urn::Cite2Urn = Cite2Urn(idx_split[3])
+            idx_terms = idx_split[4]
+
+            (idx_key, idx_lemma, idx_urn, idx_terms)
+
+        end
     end
+
     (lsj_index, lsj_coll)
 end
 
