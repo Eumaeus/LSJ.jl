@@ -230,7 +230,6 @@ callback!(
             firstLetter::String = firstLetterForUrn(trialUrn)
             if (firstLetter == "") PreventUpdate()
             else 
-                println("got for first letter: $firstLetter")
                 firstLetter
             end
         end
