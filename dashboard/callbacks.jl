@@ -38,10 +38,12 @@ callback!(
        finalOptions = begin
            if (trigger_id == "volumeList.value")
                 if (input_value == "nothing") newOptions
-                elseif (input_value == Nothing) newOptions
+                elseif (input_value == nothing) newOptions
                 else 
                     firstItem = findfirst(item -> item.value == input_state, newOptions)
-                    if (firstItem < 21) newOptions
+                    if (firstItem == nothing) 
+                        throw(PreventUpdate())
+                    elseif (firstItem < 21) newOptions
                     else
                         myEnd = (firstItem - 20)
                         myRange = 1:myEnd
@@ -64,7 +66,7 @@ callback!(
 
     trialUrn = getUrn(input_value)
 
-    if (trialUrn == Nothing) true
+    if (trialUrn == nothing) true
     else false
     end
 end
@@ -79,7 +81,7 @@ callback!(
     trialUrn = getUrn(input_value)
 
     newValue::String = begin
-        if (trialUrn == Nothing) ""
+        if (trialUrn == nothing) ""
         else string(trialUrn)
         end
     end
@@ -134,6 +136,8 @@ callback!(
 
 end
 
+
+
 # When #volumeList-value changes, select it in lexEntry
 callback!(
     app,
@@ -142,11 +146,11 @@ callback!(
     prevent_initial_call = true
     ) do input_value
 
-    if (input_value == Nothing) ""
+    if (input_value == nothing) ""
     else
         trialUrn = getUrn(input_value)
 
-        if (trialUrn == Nothing) PreventUpdate()
+        if (trialUrn == nothing) throw(PreventUpdate())
         else
             lexEntry::String = lookupUrnEntry(trialUrn)
             return dcc_markdown(lexEntry)
@@ -162,11 +166,11 @@ callback!(
     prevent_initial_call = true
     ) do input_value
 
-    if (input_value == Nothing) ""
+    if (input_value == nothing) ""
     else
         trialUrn = getUrn(input_value)
 
-        if (trialUrn == Nothing) PreventUpdate()
+        if (trialUrn == nothing) throw(PreventUpdate())
         else
             lexKey::String = lookupUrnKey(trialUrn)
             return dcc_markdown(lexKey)
@@ -181,14 +185,14 @@ callback!(
     Input("volumeList", "value"),
     prevent_initial_call=true) do input_value
 
-    if (input_value == Nothing) PreventUpdate()
+    if (input_value == nothing) throw(PreventUpdate())
     else
         trialUrn = getUrn(input_value)
 
-        if (trialUrn == Nothing) PreventUpdate()
+        if (trialUrn == nothing) throw(PreventUpdate())
         else
             firstLetter::String = firstLetterForUrn(trialUrn)
-            if (firstLetter == "") PreventUpdate()
+            if (firstLetter == "") throw(PreventUpdate())
             else 
                 firstLetter
             end
@@ -215,11 +219,11 @@ callback!(
     prevent_initial_call = true
 ) do input_value
 
-    if (input_value == Nothing) ""
+    if (input_value == nothing) ""
     else
         trialUrn = getUrn(input_value)
 
-        if (trialUrn == Nothing) PreventUpdate()
+        if (trialUrn == nothing) throw(PreventUpdate())
         else
             return string(trialUrn)
         end
@@ -234,11 +238,11 @@ callback!(
     prevent_initial_call = true
     ) do input_value
 
-    if (input_value == Nothing) PreventUpdate()
+    if (input_value == nothing) throw(PreventUpdate())
     else
         trialUrn = getUrn(input_value)
 
-        if (trialUrn == Nothing) PreventUpdate()
+        if (trialUrn == nothing) throw(PreventUpdate())
         else
             linkUrl = "?urn=$(string(trialUrn))"
             html_a( href=linkUrl, "Link")            
@@ -255,11 +259,11 @@ callback!(
     prevent_initial_call = true
     ) do input_value
 
-    if (input_value == Nothing) PreventUpdate()
+    if (input_value == nothing) throw(PreventUpdate())
     else
         trialUrn = getUrn(input_value)
 
-        if (trialUrn == Nothing) PreventUpdate()
+        if (trialUrn == nothing) throw(PreventUpdate())
         else
             html_a(string(trialUrn))            
         end
@@ -275,7 +279,7 @@ callback!(
     prevent_initial_call = true
     ) do entry_value
 
-        if (entry_value == "") PreventUpdate()
+        if (entry_value == "") throw(PreventUpdate())
         else "app_visible"
         end
 end
@@ -285,22 +289,17 @@ callback!(
     app,
     Output("resultsList", "options"),
     Input("greekInput", "value"),
+    Input("searchButton", "n_clicks"),
     Input("querySubmit", "n_clicks"),
-    prevent_initial_call = true) do input_valueg, input_valueq
+    State("englishInput", "value"),
+    prevent_initial_call = true) do input_valueG, input_valueS, input_valueQ, stateE
 
     ctx = callback_context()
     trigger_id = ctx.triggered[1].prop_id
 
-    input_value = begin
-        if (trigger_id == "querySubmit.n_clicks")
-            input_valueq
-        else
-            input_valueg
-        end
-    end
+    if (trigger_id == "greekInput.value")
 
-    if (input_value == input_valueq) return []
-    else
+        input_value = input_valueG
 
         sl = length(input_value)
 
@@ -334,6 +333,16 @@ callback!(
             allFound = cat(le, lbw, lc, ec, dims=1)
             entryFindsToOptions(allFound) |> unique
         end
+    elseif (trigger_id == "querySubmit.n_clicks")
+        []
+    elseif (trigger_id == "searchButton.n_clicks")
+
+        input_value = stateE
+
+        allFound = fullTextSearch(input_value)
+        entryFindsToOptions(allFound)
+
+    else throw(PreventUpdate())
     end
 end 
 
@@ -344,7 +353,7 @@ callback!(
     Input("englishInput", "value"),
     prevent_initial_call = true ) do input_value
 
-    if (length(input_value) < 4) true
+    if (length(input_value) < 3) true
     else
         false
     end 
