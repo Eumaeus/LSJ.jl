@@ -7,21 +7,57 @@ end
 callback!(
     app, 
     Output("volumeList", "options"), 
+    Input("volumeList", "value"),
     Input("alphaList", "value"),
-    prevent_initial_call=true) do input_value
+    State("volumeList", "value"),
+    prevent_initial_call=true) do input_valuev, input_valuea, input_state
 
-    filteredLexIdx = filterLexIndex(input_value, lsj_keys)
+        ctx = callback_context()
+        trigger_id = ctx.triggered[1].prop_id
 
-    newOptions = begin
-        if (input_value == "") vec([])
-        else lexIndexToOptions(filteredLexIdx)
-        end 
+        input_value = begin
+            if (trigger_id == "volumeList.value") 
+                firstLetterForUrn(input_state)
+            else 
+                input_valuea     
+            end
+        end
+
+
+        filteredLex = filterLexIndex(input_value, lsj_keys)
+
+
+        newOptions = begin
+            if (input_value == "") 
+                vec([])
+            else 
+                lexIndexToOptions(filteredLex)
+            end
+        end
+
+       finalOptions = begin
+           if (trigger_id == "volumeList.value")
+                if (input_value == "nothing") newOptions
+                elseif (input_value == Nothing) newOptions
+                else 
+                    firstItem = findfirst(item -> item.value == input_state, newOptions)
+                    if (firstItem < 21) newOptions
+                    else
+                        myEnd = (firstItem - 20)
+                        myRange = 1:myEnd
+                        deleteat!(newOptions, myRange)
+                    end
+                end
+            else 
+                newOptions
+            end 
+       end
+
     end
 
-    newOptions
-end
 
 # If a urn is submitted from #querySubmit, go ahead and cancel any selection in #volumeList
+#=
 callback!(
     app, 
     Output("volumeList", "value"), 
@@ -31,6 +67,7 @@ callback!(
 
     ""
 end
+=#
 
 #Checks contents of #passageInput for a valid Cite2Urn; if there is one, activate button #querySubmit
 callback!(
@@ -65,6 +102,7 @@ callback!(
 end
 
 #TESTING update the URL
+#=
 callback!(
         app,
         Output("thisUrl", "search"),
@@ -81,7 +119,9 @@ callback!(
     end
 
 end
+=#
 
+#=
 callback!(
    app,
    Output("urlDisplay", "children"),
@@ -89,6 +129,7 @@ callback!(
 
    input_value
 end
+=#
 
 
 #If there is a valid URN in #passageInput, change the text of button #querySubmit
@@ -108,17 +149,14 @@ end
 
 #= 
     A Switcher callback. Alas, one of several.
-    Activated from #volumeList, from #passageInput, or from #resultsList
-    Delivers results to #selectedUrnP
+    Activated from from #passageInput, from #englishInput/#searchButton, or from #resultsList
 =#
-
 callback!(
     app,
     Output("selectedUrnP", "children"),
     Input("querySubmit", "n_clicks"),
-    Input("volumeList", "value"),
     State("querySubmit", "value"),
-    prevent_initial_call = true) do qValue, vValue, qState
+    prevent_initial_call = true) do qValue, qState
 
     # querySubmit.n_clicks
     # volumeList.value
@@ -126,9 +164,7 @@ callback!(
     ctx = callback_context()
     trigger_id = ctx.triggered[1].prop_id
 
-    if (trigger_id == "volumeList.value")
-        return vValue
-    elseif (trigger_id == "querySubmit.n_clicks")
+    if (trigger_id == "querySubmit.n_clicks")
         return qState
     else
         return ""
@@ -138,12 +174,11 @@ callback!(
 
 end
 
-
-# When #selectedUrnP changes, get an entry and put it in #entryDiv as Markdown
+# When #volumeList-value changes, select it in lexEntry
 callback!(
     app,
     Output("lexEntry", "children"),
-    Input("selectedUrnP", "children"),
+    Input("volumeList", "value"),
     prevent_initial_call = true
     ) do input_value
 
@@ -159,11 +194,11 @@ callback!(
     end
 end
 
-# When #selectedUrnP changes, get an entry's .key and put it in #lexEntryLabel
+# When #volumeList-value changes, get an entry's .key and put it in #lexEntryLabel
 callback!(
     app,
     Output("lexEntryLabel", "children"),
-    Input("selectedUrnP", "children"),
+    Input("volumeList", "value"),
     prevent_initial_call = true
     ) do input_value
 
@@ -179,11 +214,11 @@ callback!(
     end
 end
 
-# When #selectedUrnP changes, update #alphaList
+# When #volumeList-value changes, update #alphaList
 callback!(
     app, 
     Output("alphaList", "value"), 
-    Input("selectedUrnP", "children"),
+    Input("volumeList", "value"),
     prevent_initial_call=true) do input_value
 
     if (input_value == Nothing) PreventUpdate()
@@ -194,7 +229,9 @@ callback!(
         else
             firstLetter::String = firstLetterForUrn(trialUrn)
             if (firstLetter == "") PreventUpdate()
-            else transcodeGreek(firstLetter)
+            else 
+                println("got for first letter: $firstLetter")
+                firstLetter
             end
         end
     end
@@ -209,11 +246,29 @@ callback!(
     ) do input_value
 
     ""
-
 end
 
 #= When #selectedUrnP changes update #volumeList
 =#
+callback!(
+    app,
+    Output("volumeList", "value"),
+    Input("selectedUrnP", "children"),
+    prevent_initial_call = true
+) do input_value
+
+    if (input_value == Nothing) ""
+    else
+        trialUrn = getUrn(input_value)
+
+        if (trialUrn == Nothing) PreventUpdate()
+        else
+            return string(trialUrn)
+        end
+    end
+
+
+end
 
 
 # When #resultsList changes, update #selecteUrnP
@@ -222,11 +277,11 @@ end
 
 # When #resultsList changes, update #volumeList
 
-# When #selectedUrnP changes, update #lexEntryLink
+# When #volumeList-valuei changes, update #lexEntryLink
 callback!(
     app,
     Output("lexEntryLink", "children"),
-    Input("selectedUrnP", "children"),
+    Input("volumeList", "value"),
     prevent_initial_call = true
     ) do input_value
 
@@ -243,11 +298,11 @@ callback!(
 
 end
 
-# When #selectedUrnP changes, update #lexEntryUrn
+# When #volumeList-value changes, update #lexEntryUrn
 callback!(
     app,
     Output("lexEntryUrn", "children"),
-    Input("selectedUrnP", "children"),
+    Input("volumeList", "value"),
     prevent_initial_call = true
     ) do input_value
 
@@ -294,6 +349,7 @@ callback!(
     elseif (sl < 4)
         le = lemmaEquals(input_value)
         lbw = lemmaBeginsWith(input_value)
+        lc = lemmaContains(input_value)
         ec = entryContains(input_value)
         #allFound = cat(le, lbw, lc, ec, dims=1) |> unique
         allFound = cat(le, lbw, lc, ec, dims=1)

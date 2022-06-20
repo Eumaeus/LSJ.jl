@@ -70,8 +70,18 @@ function firstLetterForUrn(u::Cite2Urn, lexKeys = lsj_keys)::String
         end
     end
     if (length(lexEntries) < 1 ) ""
-    else string(lexEntries[1][1][1])
+    else 
+        thisKey = string(lexEntries[1][1][1])
+        tempFirst = transcodeGreek(thisKey)
+        if (tempFirst == "ς") "σ"
+        else tempFirst
+        end
     end
+end
+
+function firstLetterForUrn(s::String, lexKeys = lsj_keys)::String
+    u = Cite2Urn(s)
+    firstLetterForUrn(u)
 end
 
 
