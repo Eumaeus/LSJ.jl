@@ -14,7 +14,7 @@ This is an implementation of a web-application for consulting [*A Greek-English 
 
 ## Running *LSJ* on Your Machine
 
-1. Download [Julia](https://julialang.org/downloads/).
+1. Download [Julia](https://julialang.org/downloads/) and do whatever it takes to install it.
 2. Clone this repository.
 3. In a terminal, `cd` into `LSJ.jl`, *e.g.* `cd ~/Desktop/LSJ.jl`, if you cloned the repository onto your Desktop.
 4. In the terminal: `julia dashboard/lsj.jl`.
