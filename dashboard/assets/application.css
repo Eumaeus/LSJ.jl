@@ -372,7 +372,7 @@ ul#resultsList, div#resultsList {
 	color: navy;
 	margin-left: 0;
 	padding-left: 0;
-	max-width:  80%;
+	max-width:  100%;
 	/*margin-top:	7em;*/
 	max-height: 8em;
 	padding-right:  3em;
@@ -383,8 +383,8 @@ ul#resultsList, div#resultsList {
 	background-color: rgb(244, 244, 244);
 	border: 1px solid rgb(216, 216, 216);
 	border-radius:  8px;
-	box-shadow:  inset 0px 4px 3px #ddd;
-	
+	box-shadow:  inset 0px 4px 3px #eee;
+
 	/* Opera doesn't support this in the shorthand */
 	background-attachment: local, local, scroll, scroll;
 }

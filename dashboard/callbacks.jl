@@ -122,6 +122,7 @@ callback!(
     # volumeList.value
 
     ctx = callback_context()
+    #println("Length of ctx.triggered: $(length(ctx.triggered))")
     trigger_id = ctx.triggered[1].prop_id
 
     if (trigger_id == "querySubmit.n_clicks")
@@ -230,7 +231,7 @@ callback!(
     end
 end
 
-# When #volumeList-valuei changes, update #lexEntryLink
+# When #volumeList-value changes, update #lexEntryLink
 callback!(
     app,
     Output("lexEntryLink", "children"),
@@ -357,5 +358,15 @@ callback!(
     else
         false
     end 
+
+end
+
+# On open, stash #thisUrl.href
+callback!(
+    app,
+    Output("urlDisplay", "children"),
+    Input("thisUrl","href")) do input_value
+
+    input_value
 
 end
