@@ -17,7 +17,11 @@ callback!(
 
         input_value = begin
             if (trigger_id == "volumeList.value") 
-                firstLetterForUrn(input_state)
+                if (input_state == nothing) throw(PreventUpdate())
+                elseif (input_state == "") throw(PreventUpdate())
+                else
+                    firstLetterForUrn(input_state)
+                end
             else 
                 input_valuea     
             end
@@ -37,7 +41,7 @@ callback!(
 
        finalOptions = begin
            if (trigger_id == "volumeList.value")
-                if (input_value == "nothing") newOptions
+                if (input_value == "") newOptions
                 elseif (input_value == nothing) newOptions
                 else 
                     firstItem = findfirst(item -> item.value == input_state, newOptions)
@@ -115,11 +119,16 @@ callback!(
     Output("selectedUrnP", "children"),
     Input("querySubmit", "n_clicks"),
     Input("resultsList", "value"),
+    Input("thisUrl", "href"),
     State("querySubmit", "value"),
-    prevent_initial_call = true) do qValue, rValue, qState
+    prevent_initial_call = true) do qValue, rValue, uValue, qState
 
     # querySubmit.n_clicks
     # volumeList.value
+
+    uParam = split(uValue, "?urn=")[2]
+
+    println("--- thisUrl == $uParam")
 
     ctx = callback_context()
     #println("Length of ctx.triggered: $(length(ctx.triggered))")
@@ -129,6 +138,8 @@ callback!(
         return qState
     elseif (trigger_id == "resultsList.value")
         return rValue
+    elseif (trigger_id == "thisUrl.href")
+        uParam
     else
         return ""
     end
@@ -148,10 +159,11 @@ callback!(
     ) do input_value
 
     if (input_value == nothing) ""
+    elseif (input_value == "") ""
     else
         trialUrn = getUrn(input_value)
-
         if (trialUrn == nothing) throw(PreventUpdate())
+        elseif (trialUrn == "") throw(PreventUpdate())
         else
             lexEntry::String = lookupUrnEntry(trialUrn)
             return dcc_markdown(lexEntry)
@@ -168,6 +180,7 @@ callback!(
     ) do input_value
 
     if (input_value == nothing) ""
+    elseif (input_value == "") ""
     else
         trialUrn = getUrn(input_value)
 
@@ -187,10 +200,12 @@ callback!(
     prevent_initial_call=true) do input_value
 
     if (input_value == nothing) throw(PreventUpdate())
+    elseif (input_value == "") throw(PreventUpdate())
     else
         trialUrn = getUrn(input_value)
 
         if (trialUrn == nothing) throw(PreventUpdate())
+        elseif (trialUrn == "") throw(PreventUpdate())
         else
             firstLetter::String = firstLetterForUrn(trialUrn)
             if (firstLetter == "") throw(PreventUpdate())
@@ -221,6 +236,7 @@ callback!(
 ) do input_value
 
     if (input_value == nothing) ""
+    elseif (input_value == "") ""
     else
         trialUrn = getUrn(input_value)
 
