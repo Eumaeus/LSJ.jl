@@ -10,6 +10,8 @@ This is an implementation of a web-application for consulting [*A Greek-English 
 2. The ScalaJS version, to achieve sufficient performance, requires a back-end microservice to do the heavy lifting of querying, mapping, and filtering the 117,000 entries in the lexicon. So the app was "online only", and requires some ongoing babysitting to keep running. This implementation in Julia can run entirely offline\*.
 3. The Dash framework imposes a number of restrictions on how components of a web-app, and data, interact. These restrictions require some thought, but results in a simpler, more stable, and more maintainable architecture. The Scala version (the *LSJ* app and necessary microservice) required about 4,500 lines of code. This implementation required only 800.
 
+\* In "entirely offline mode", the app will not be able to download the EB Garamond font from Google, so the text will not be as attractive as it might be.
+
 ## Running *LSJ* on Your Machine
 
 1. Download [Julia](https://julialang.org/downloads/).
