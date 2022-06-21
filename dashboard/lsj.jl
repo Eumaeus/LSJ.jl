@@ -95,7 +95,7 @@ app.layout = html_div(className = "w3-container") do
 
     html_header() do 
         dcc_markdown("*A Greek-English Lexicon*, Henry George Liddell, Robert Scott, revised and augmented throughout by Sir Henry Stuart Jones with the assistance of Roderick McKenzie (Oxford: Clarendon Press. 1940)."),
-        html_span(id="app_header_versionInfo", "CITE (Julia) version 0.1.0"),
+        html_span(id="app_header_versionInfo", "CITE (Julia) version 1.0.0"),
         html_div(id = "main_message", className = "app_message app_hidden default") do 
             dcc_markdown("""
                 Loaded $(length(lexicon)) characters of lexical data.

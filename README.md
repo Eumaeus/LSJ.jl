@@ -1,5 +1,7 @@
 # LSJ(ulia)
 
+**v. 1.0.0**
+
 This is an implementation of a web-application for consulting [*A Greek-English Lexicon*, edited by Liddell, Scott, & Jones](https://en.wikipedia.org/wiki/A_Greek–English_Lexicon). It is written in [Julia](https://julialang.org) with the [Dash framework](https://dash.plotly.com/julia/introduction). It is the successor to an [earlier version](http://folio2.furman.edu/lsj/), written in [ScalaJS](https://www.scala-js.org) (See, [this blog post about that earlier version, and the data behind it](https://eumaeus.github.io/2018/10/30/lsj.html))
 
 ## Why Rewrite a Working App in Julia?
