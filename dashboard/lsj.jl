@@ -5,6 +5,8 @@ Pkg.instantiate()
 
 assetsfolder = joinpath(pwd(), "dashboard", "assets")
 
+imagefolder = joinpath(pwd(), "dashboard", "assets")
+
 using Dash
 using Downloads
 using CitableBase
@@ -124,6 +126,9 @@ app.layout = html_div(className = "w3-container") do
     html_div( className = "push", " "),
     html_div( className = "smallPrint") do 
       bottomSmallPrint,
+      html_p( id = "fu_logo") do 
+        html_img(id="fu_logo_img", src="https://raw.githubusercontent.com/Eumaeus/LSJ.jl/logo/dashboard/assets/fu.svg")
+      end,
       dcc_location(id = "thisUrl", search = "?urn=", refresh=false),
       html_p(id = "urlDisplay", className = "", "")
     end

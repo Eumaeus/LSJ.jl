@@ -29,9 +29,34 @@ img.github_logo {
 	display: inline-block;
 	position: relative;
 	bottom: -3px;
+
 }
 
-span.fu_motto, span.cc_license > a {
+img#fu_logo_img {
+	height:  45px;
+	position: absolute;
+	bottom:  -13px;
+	left:  -30px;
+}
+
+span#fu_motto {
+	position:  absolute;
+	bottom:  -10px;
+	left:  40px;
+}
+
+p#fu_logo, span#furman_motto {
+	font-family: Helvetica, sans;
+	font-weight: 200;
+	font-size: 12pt;
+	color: white;
+	z-index:  100;
+	display: inline-block;
+	position: fixed;
+	bottom: 5px;	
+}
+
+p.fu_motto, p.cc_license > a {
 	font-family: Helvetica, sans;
 	font-weight: 200;
 	font-size: 12pt;
@@ -73,6 +98,11 @@ div.smallPrint {
 
 #selectedUrnDiv {
 	display:  none;
+}
+
+p#urlDisplay {
+	margin-bottom:  2em;
+
 }
 
 #copyUrn {
