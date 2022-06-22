@@ -5,6 +5,8 @@ Pkg.instantiate()
 
 assetsfolder = joinpath(pwd(), "dashboard", "assets")
 
+imagefolder = joinpath(pwd(), "dashboard", "assets")
+
 using Dash
 using Downloads
 using CitableBase
