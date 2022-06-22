@@ -128,8 +128,6 @@ callback!(
 
     uParam = split(uValue, "?urn=")[2]
 
-    println("--- thisUrl == $uParam")
-
     ctx = callback_context()
     #println("Length of ctx.triggered: $(length(ctx.triggered))")
     trigger_id = ctx.triggered[1].prop_id

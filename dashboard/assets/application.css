@@ -372,7 +372,7 @@ ul#resultsList, div#resultsList {
 	color: navy;
 	margin-left: 0;
 	padding-left: 0;
-	max-width:  100%;
+	max-width:  81%;
 	/*margin-top:	7em;*/
 	max-height: 8em;
 	padding-right:  3em;
@@ -458,8 +458,8 @@ div#volumeList, ul#volumeList {
 	color: navy;
 	margin-left: 0;
 	padding-left: 1em;
-	width: 8em;
-	margin-right: 1em;
+	width: 6em;
+	margin-right: 0em;
 	height: 550px;
 	overflow: scroll;
 
