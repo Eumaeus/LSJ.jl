@@ -100,6 +100,11 @@ end
 	
 =#
 
+#=
+<span class="fu_motto">Editions, done right, for learners.</span>
+		<span class="cc_license"><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC</a></span>
+		<a href="https://github.com/Furman-University-Editions/OedipusTyrannos"><img alt="github" class="github_logo" height="30px" src="GitHub-Mark-Light-120px-plus.png"/></a>
+=#
 
 bottomSmallPrint = dcc_markdown("""*A Greek-English Lexicon*, Henry George Liddell, Robert Scott, revised and augmented throughout by Sir Henry Stuart Jones with the assistance of Roderick McKenzie (Oxford: Clarendon Press. 1940). Text provided by Perseus Digital Library, with funding from The National Endowment for the Humanities. Substantial additions to the original Perseus data are courtesy of the hard work of Helma Dik and Giuseppe Celano. Original version available for viewing and download at <http://www.perseus.tufts.edu/>. This application is ©2022, Christopher W. Blackwell, licensed under the [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). CITE/CTS is ©2002–2022 Neel Smith and Christopher Blackwell. The implementations of the [CITE](http://cite-architecture.github.io) were written by Neel Smith and Christopher Blackwell using Julia and Dash.jl. Licensed under the [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). Sourcecode on [GitHub](https://github.com/Eumaeus/LSJ.jl). Report bugs by [filing issues on GitHub](https://github.com/Eumaeus/LSJ.jl/issues).""")
 
