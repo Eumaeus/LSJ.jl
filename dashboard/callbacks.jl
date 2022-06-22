@@ -126,7 +126,13 @@ callback!(
     # querySubmit.n_clicks
     # volumeList.value
 
-    uParam = split(uValue, "?urn=")[2]
+    uParam = begin
+        if (length(split(uValue, "?urn=")) < 2)
+            ""
+        else
+            split(uValue, "?urn=")[2]
+        end 
+    end 
 
     ctx = callback_context()
     #println("Length of ctx.triggered: $(length(ctx.triggered))")
