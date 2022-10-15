@@ -15,10 +15,11 @@ This is an implementation of a web-application for consulting [*A Greek-English 
 ## Running *LSJ* on Your Machine
 
 1. Download [Julia](https://julialang.org/downloads/) and do whatever it takes to install it.
-2. Clone this repository.
-3. In a terminal, `cd` into `LSJ.jl`, *e.g.* `cd ~/Desktop/LSJ.jl`, if you cloned the repository onto your Desktop.
-4. In the terminal: `julia dashboard/lsj.jl`.
-5. When it is up and running (the initial load may take a while, as it downloads and compiles necessary libraries), visit `http://localhost:8054/` in your browser.
+1. Clone this repository.
+1. In a terminal, `cd` into `LSJ.jl`, *e.g.* `cd ~/Desktop/LSJ.jl`, if you cloned the repository onto your Desktop.
+1. In the terminal: `julia dashboard/lsj.jl`.
+1. There is a good chance that you will need to add some libraries via Julia's package manager. Julia will tell you what to do. Do that.
+1. When it is up and running (the initial load may take a while, as it downloads and compiles necessary libraries), visit `http://localhost:8054/` in your browser.
 
 ## Bugs or Errors in Data
 
